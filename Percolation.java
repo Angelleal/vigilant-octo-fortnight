@@ -23,12 +23,8 @@ public class Percolation {
         openSites = new boolean[siteNumber + 2];
         sites = new WeightedQuickUnionUF(siteNumber + 2);
         sitesViz = new WeightedQuickUnionUF(siteNumber + 1);
-        for (int i = 1; i <= gridSize; i++) {
-            sites.union(virtualTop, i);
-            sitesViz.union(virtualTop, i);
-            int bottomRowStart = virtualBottom - gridSize;
-            sites.union(virtualBottom, bottomRowStart + i);
-        }
+        openSites[virtualTop] = true;
+        openSites[virtualBottom] = true;
     }
 
     /**
@@ -93,7 +89,7 @@ public class Percolation {
     }
 
     private int rowColTo1D(int row, int col) {
-        int ret = ((row * gridSize) + col) - gridSize;
+        int ret = (((row - 1) * gridSize) + col);
         if (ret < 1) {
             return 0;
         } else if (ret > gridSize * gridSize) {
@@ -118,35 +114,36 @@ public class Percolation {
         }
     }
 
-    private void connectLeftSite(int row, int col) {
-        if (col > 1 && isOpen(row, col - 1)) {
-            sites.union(rowColTo1D(row, col), rowColTo1D(row, col - 1));
-            sitesViz.union(rowColTo1D(row, col), rowColTo1D(row, col - 1));
+    private void connect(int curr, int neighbor) {
+        if (openSites[neighbor]) {
+            sites.union(curr, neighbor);
+            if (neighbor != ((gridSize * gridSize) + 1)) {
+                sitesViz.union(curr, neighbor);
+            }
         }
+    }
 
+    private void connectLeftSite(int row, int col) {
+        int curr = rowColTo1D(row, col);
+        int neighbor = rowColTo1D(row, col - 1);
+        connect(curr, neighbor);
     }
 
     private void connectRightSite(int row, int col) {
-        if (col < gridSize && isOpen(row, col + 1)) {
-            sites.union(rowColTo1D(row, col), rowColTo1D(row, col + 1));
-            sitesViz.union(rowColTo1D(row, col), rowColTo1D(row, col + 1));
-        }
-
+        int curr = rowColTo1D(row, col);
+        int neighbor = rowColTo1D(row, col + 1);
+        connect(curr, neighbor);
     }
 
     private void connectTopSite(int row, int col) {
-        if (row > 1 && isOpen(row - 1, col)) {
-            sites.union(rowColTo1D(row, col), rowColTo1D(row - 1, col));
-            sitesViz.union(rowColTo1D(row, col), rowColTo1D(row - 1, col));
-        }
-
+        int curr = rowColTo1D(row, col);
+        int neighbor = rowColTo1D(row - 1, col);
+        connect(curr, neighbor);
     }
 
     private void connectBottomSite(int row, int col) {
-        if (row < gridSize && isOpen(row + 1, col)) {
-            sites.union(rowColTo1D(row, col), rowColTo1D(row + 1, col));
-            sitesViz.union(rowColTo1D(row, col), rowColTo1D(row + 1, col));
-        }
-
+        int curr = rowColTo1D(row, col);
+        int neighbor = rowColTo1D(row + 1, col);
+        connect(curr, neighbor);
     }
 }
