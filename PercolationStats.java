@@ -33,8 +33,8 @@ public class PercolationStats {
      * @param args
      */
     public static void main(String[] args) {
-        int n = new Integer(args[0]);
-        int trials = new Integer(args[0]);
+        int n = Integer.parseInt(args[0]);
+        int trials = Integer.parseInt(args[1]);
 
         PercolationStats pStats = new PercolationStats(n, trials);
         for (int i = 0; i < trials; i++) {
