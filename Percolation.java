@@ -4,9 +4,9 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
  * Created by USUARIO on 13/02/2017.
  */
 public class Percolation {
-    int gridSize = 0, openSiteCount = 0, virtualTop = 0, virtualBottom = 0;
-    boolean[] openSites;
-    WeightedQuickUnionUF sites, sitesViz;
+    private int gridSize = 0, openSiteCount = 0, virtualTop = 0, virtualBottom = 0;
+    private boolean[] openSites;
+    private WeightedQuickUnionUF sites, sitesViz;
 
     /**
      * create n-by-n grid, with all sites blocked

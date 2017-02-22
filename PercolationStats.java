@@ -6,9 +6,9 @@ import edu.princeton.cs.algs4.StdStats;
  */
 public class PercolationStats {
 
-    double[] openSitePercent;
-    double z = 1.96;
-    int n, trials, siteNumber;
+    private double[] openSitePercent;
+    private double z = 1.96;
+    private int n, trials, siteNumber;
 
 
     /**
