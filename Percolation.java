@@ -124,15 +124,19 @@ public class Percolation {
     }
 
     private void connectLeftSite(int row, int col) {
-        int curr = rowColTo1D(row, col);
-        int neighbor = rowColTo1D(row, col - 1);
-        connect(curr, neighbor);
+        if (col > 1) {
+            int curr = rowColTo1D(row, col);
+            int neighbor = rowColTo1D(row, col - 1);
+            connect(curr, neighbor);
+        }
     }
 
     private void connectRightSite(int row, int col) {
-        int curr = rowColTo1D(row, col);
-        int neighbor = rowColTo1D(row, col + 1);
-        connect(curr, neighbor);
+        if (col < gridSize) {
+            int curr = rowColTo1D(row, col);
+            int neighbor = rowColTo1D(row, col + 1);
+            connect(curr, neighbor);
+        }
     }
 
     private void connectTopSite(int row, int col) {
