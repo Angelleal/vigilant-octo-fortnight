@@ -52,7 +52,8 @@ public class PercolationStats {
         }
         System.out.println(String.format("%-23s = %f", "mean", pStats.mean()));
         System.out.println(String.format("%-23s = %f", "stddev", pStats.stddev()));
-        System.out.println(String.format("%-23s = [%f, %f]", "95% confidence interval", pStats.confidenceLo(), pStats.confidenceHi()));
+        System.out.println(String.format("%-23s = [%f, %f]", "95% confidence interval",
+                pStats.confidenceLo(), pStats.confidenceHi()));
 
     }
 

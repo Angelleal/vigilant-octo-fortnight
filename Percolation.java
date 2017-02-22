@@ -37,13 +37,17 @@ public class Percolation {
      * @param row row of site
      * @param col column of site
      */
-    public void open(int row, int col) throws ArrayIndexOutOfBoundsException {
-        connectTopSite(row, col);
-        connectRightSite(row, col);
-        connectBottomSite(row, col);
-        connectLeftSite(row, col);
-        openSites[rowColTo1D(row, col)] = true;
-        openSiteCount++;
+    public void open(int row, int col) {
+        validateIndices(row, col);
+        if (!isOpen(row, col)) {
+            connectTopSite(row, col);
+            connectRightSite(row, col);
+            connectBottomSite(row, col);
+            connectLeftSite(row, col);
+            openSites[rowColTo1D(row, col)] = true;
+            openSiteCount++;
+        }
+
     }
 
     /**
@@ -53,7 +57,8 @@ public class Percolation {
      * @param col
      * @return
      */
-    public boolean isOpen(int row, int col) throws ArrayIndexOutOfBoundsException {
+    public boolean isOpen(int row, int col) {
+        validateIndices(row, col);
         return openSites[rowColTo1D(row, col)];
     }
 
@@ -64,7 +69,8 @@ public class Percolation {
      * @param col
      * @return
      */
-    public boolean isFull(int row, int col) throws ArrayIndexOutOfBoundsException {
+    public boolean isFull(int row, int col) {
+        validateIndices(row, col);
         return isOpen(row, col) && sitesViz.connected(virtualTop, rowColTo1D(row, col));
     }
 
@@ -87,7 +93,29 @@ public class Percolation {
     }
 
     private int rowColTo1D(int row, int col) {
-        return ((row * gridSize) + col) - gridSize;
+        int ret = ((row * gridSize) + col) - gridSize;
+        if (ret < 1) {
+            return 0;
+        } else if (ret > gridSize * gridSize) {
+            return ((gridSize * gridSize) + 1);
+        } else {
+            return ret;
+        }
+    }
+
+    /**
+     * Validates that indices are contained between 1 and N
+     *
+     * @param row row index to validate
+     * @param col column index to validate
+     */
+    private void validateIndices(int row, int col) {
+        if (row <= 0 || row > gridSize) {
+            throw new IndexOutOfBoundsException("row index i out of bounds");
+        }
+        if (col <= 0 || col > gridSize) {
+            throw new IndexOutOfBoundsException("column index j out of bounds");
+        }
     }
 
     private void connectLeftSite(int row, int col) {
