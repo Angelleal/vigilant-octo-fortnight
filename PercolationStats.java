@@ -25,6 +25,20 @@ public class PercolationStats {
         this.siteNumber = n * n;
         this.trials = trials;
         openSitePercent = new double[trials];
+
+        for (int i = 0; i < trials; i++) {
+            Percolation p = new Percolation(n);
+            while (!p.percolates()) {
+                int row, col;
+                do {
+                    row = StdRandom.uniform(1, n + 1);
+                    col = StdRandom.uniform(1, n + 1);
+                } while (p.isOpen(row, col));
+
+                p.open(row, col);
+            }
+            openSitePercent[i] = p.numberOfOpenSites() / ((double) siteNumber);
+        }
     }
 
     /**
@@ -37,19 +51,7 @@ public class PercolationStats {
         int trials = Integer.parseInt(args[1]);
 
         PercolationStats pStats = new PercolationStats(n, trials);
-        for (int i = 0; i < trials; i++) {
-            Percolation p = new Percolation(n);
-            while (!p.percolates()) {
-                int row, col;
-                do {
-                    row = StdRandom.uniform(1, n + 1);
-                    col = StdRandom.uniform(1, n + 1);
-                } while (p.isOpen(row, col));
 
-                p.open(row, col);
-            }
-            pStats.openSitePercent[i] = p.numberOfOpenSites() / ((double) pStats.siteNumber);
-        }
         System.out.println(String.format("%-23s = %f", "mean", pStats.mean()));
         System.out.println(String.format("%-23s = %f", "stddev", pStats.stddev()));
         System.out.println(String.format("%-23s = [%f, %f]", "95% confidence interval",
